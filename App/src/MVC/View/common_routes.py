@@ -2,7 +2,7 @@
 Module containing the 'CommonRoutes'.
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from src.Interfaces.MVC.View.route_interface import Route
 
@@ -22,8 +22,10 @@ class CommonRoutes(Route):
             A reference to the Flask app.
         """
         app.add_url_rule('/', view_func=self.index)
+        app.add_url_rule('/index', view_func=self.index)
+        app.add_url_rule('/home', view_func=self.index)
 
-
+    # ROUTES:
     def index(self) -> str:
         """
         Method to render the index page.
@@ -33,4 +35,4 @@ class CommonRoutes(Route):
         str:
             The index page rendered in str format.
         """
-        return render_template('index.html')
+        return render_template("index.html")

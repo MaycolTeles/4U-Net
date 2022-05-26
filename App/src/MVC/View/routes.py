@@ -31,6 +31,5 @@ class Routes(Route):
         app : Flask
             A reference to the Flask app.
         """
-        
         for entity in self.entities:
             entity.create_routes(app)
