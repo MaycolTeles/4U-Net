@@ -21,11 +21,24 @@ class InstallerRoutes(Route):
         app : Flask
             A reference to the Flask app.
         """
-        app.add_url_rule('/instaladores/<installer_name>', view_func=self.installers)
+        app.add_url_rule('/instaladores/', view_func=self.installers)
+        app.add_url_rule('/instaladores/<installer_name>', view_func=self.installer)
 
-    def installers(self, installer_name: str) -> str:
+    # ROUTES:
+    def installers(self) -> str:
         """
         Method to render the installer page.
+
+        Returns
+        --------
+        str:
+            The installers page rendered in str format.
+        """
+        return render_template('installers.html')
+
+    def installer(self, installer_name: str) -> str:
+        """
+        Method to render the installer page, based on a single installer.
 
         Parameters
         ----------
