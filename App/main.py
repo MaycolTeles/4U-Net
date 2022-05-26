@@ -1,16 +1,19 @@
 """
-Main module containing the start of your application.
+Main module containing the application start.
 """
 
-from src.Entities.app import App
+from src.app import App
+from src.MVC.View.routes import Routes
 
 
 def main() -> None:
     """
-    Main function. This is where your application will start.
+    Main function. This is where the application will start.
     """
 
-    app = App()
+    routes = Routes()
+
+    app = App(routes)
     app.run()
 
 
