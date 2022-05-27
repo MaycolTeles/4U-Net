@@ -1,6 +1,10 @@
 """
-Module containing some configurations.
+Module containing some configurations and constants.
 """
+
+from typing import Any, Dict
+
+JSON = Dict[str, Any]
 
 TEMPLATE_FOLDER_PATH = '../templates'
 
