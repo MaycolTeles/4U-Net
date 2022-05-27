@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+    <title>Planos</title>
+</head>
+<body>
+    <h1>PLANO:</h1>
+
+    {% if plan %}
+    <h2>Provedor de internet: {{ plan['isp'] }}</h2>
+    <h2>Franquia de dados em GB: {{ plan['data_capacity'] }}</h2>
+    <h2>Velocidade de download em Mbps: {{ plan['download_speed'] }}</h2>
+    <h2>Franquia de dados em GB: {{ plan['upload_speed'] }}</h2>
+    <h2>Descrição sobre o plano: {{ plan['description'] }}</h2>
+    <h2>Peço do plano em reais para um mês de serviço: {{ plan['price_per_month'] }}</h2>
+    <h2>Tipo de internet: {{ plan['type_of_internet'] }}</h2>
+    {% endif%}
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+    <title>Instaladores</title>
+</head>
+<body>
+    <h1>INSTALADOR:</h1>
+
+    {% if installer %}
+    <h2>Nome do instalador: {{ installer['name'] }}</h2>
+    <h2>Nota do instalador: {{ installer['rating'] }}</h2>
+    <h2>Preço que o instalador cobra para cada quilômetro que ele precisa percorrer até local de instalação: {{ installer['price_per_km'] }}</h2>
+    <h2>Latitude de onde o instalador se encontra: {{ installer['lat'] }}</h2>
+    <h2>Longitude de onde o instalador se encontra: {{ installer['lng'] }}</h2>
+    {% endif%}
+
+</body>
+</html>

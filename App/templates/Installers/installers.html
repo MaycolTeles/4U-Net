@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+    <title>Instaladores</title>
+</head>
+<body>
+  
+  <ol>
+  <!-- For loop logic of jinja template -->
+  {%for i in range(0, len_installers)%}
+    
+      <li>{{ installers[i] }}</li>
+  {%endfor%}
+  </ol>
+  
+</body>
+</html>
