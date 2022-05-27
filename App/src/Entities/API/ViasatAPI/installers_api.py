@@ -4,6 +4,7 @@ Module containing the 'APIInstallers' Class.
 
 import requests
 
+
 from config import API_URL, JSON
 
 
@@ -12,6 +13,9 @@ class APIInstallers():
     Class containing all the Installers API functionalities, like:
     
     - Consulting available installers;
+
+    This Class implements an Interface to respect the DIP
+    (Dependency Inversion Principle).
     """
 
     def get_installers(self) -> JSON:

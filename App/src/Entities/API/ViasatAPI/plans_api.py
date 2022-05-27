@@ -4,6 +4,7 @@ Module containing the 'APIPlans' Class.
 
 import requests
 
+
 from config import API_URL, JSON
 
 

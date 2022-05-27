@@ -4,7 +4,7 @@ Module containing the 'TestMyDatabase' Class.
 
 import unittest
 
-from src.MVC.Model.my_database import MyDatabase
+from src.MVC.Model.MySQL import MyDatabase
 
 
 class TestMyDatabase(unittest.TestCase):
