@@ -2,15 +2,15 @@
 <html>
 
 <head>
-  <title>Instaladores</title>
+  <title>Planos</title>
   <link rel="stylesheet" href="../static/styles/style.css">
 </head>
 
 <body>
   <div class="banner">
-    <form action="/action_page.php">
-      <label for="estados">Escolha um estado</label>
-      <select id="estado" name="estado">
+    <form action="/escolher_estado/" method="POST">
+      <label for="states">Escolha um estado</label>
+      <select id="state" name="state">
         <option value="None" selected></option>
         <option value="AC">Acre</option>
         <option value="AL">Alagoas</option>
