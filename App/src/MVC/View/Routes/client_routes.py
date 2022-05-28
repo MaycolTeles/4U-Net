@@ -1,5 +1,5 @@
 """
-Module containing the 'ClientRoutes'.
+Module containing the 'ClientRoutes' Class.
 """
 
 from flask import Flask, render_template
@@ -14,15 +14,15 @@ class ClientRoutes(Route):
 
     def create_routes(self, app: Flask) -> None:
         """
-        Method to create all the common routes.
+        Method to create all the client routes.
 
         Parameters
         -----------
         app : Flask
             A reference to the Flask app.
         """
-        app.add_url_rule('/clients', view_func=self.clients)
-        app.add_url_rule('/cliente/<client_name>', view_func=self.client)
+        app.add_url_rule('/clientes', view_func=self.clients)
+        app.add_url_rule('/clientes/<client_name>', view_func=self.client)
 
     # ROUTES:
     def clients(self) -> str:
@@ -34,7 +34,7 @@ class ClientRoutes(Route):
         str:
             The clients page rendered in str format.
         """
-        return render_template('clients.html')
+        return render_template('Clients/clients.html')
 
     def client(self, client_name: str) -> str:
         """
@@ -50,4 +50,4 @@ class ClientRoutes(Route):
         str:
             The clients page rendered in str format.
         """
-        return render_template('clients.html', client_name=client_name)
+        return render_template('Clients/clients.html', client_name=client_name)
