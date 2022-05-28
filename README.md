@@ -1,7 +1,7 @@
 # NET-4U (HACKATHON SECOMP 2022)
 Este repositório refere-se ao desenvolvimento de um web-app para a participação do Hackathon da semana de computação (SECOMP) do Instituto Nacional de Telecomunicações - INATEL, patrocinado pela empresa VIASAT.
 
-<img src="App/static/styles/assets/logo_azul.png" align="right" width="100">
+<img src="App/static/styles/assets/logo_azul.png" align="right" width="300">
 
 # NET-4U
 Projeto desenvolvido para ajudar pessoas a encontrarem os serviços de provedores de internet mais próximos.
