@@ -63,6 +63,7 @@
 }
 .content p{
     margin: 20px auto;
+    font-size: 20px;
     font-weight: 100;
     line-height: 15px;
 }
@@ -114,12 +115,11 @@ form{
     align-items: center;
 }
 select{
-    margin: 30px;
-    width: 200px;
+    width: 150px;
     padding: 15px 0;
     text-align: center;
-    margin: 20px 10px;
-    border-radius: 5px;
+    margin: 10px 10px;
+    border-radius: 10px;
     font-weight: bold;
     border: 2px solid #004AAD;
     background: transparent;
@@ -127,11 +127,14 @@ select{
     cursor: pointer;
     position: relative;
 }
+option{
+    color: #004AAD
+}
 label{
     font-size: 40px;
 }
 input{
-    width: 200px;
+    width: 100px;
     padding: 15px 0;
     text-align: center;
     margin: 20px 10px;
@@ -142,4 +145,14 @@ input{
     color: #fff;
     cursor: pointer;
     position: relative;
+}
+.showInfoInstaller{
+    color: #fff;
+    width: 85%;
+    margin: auto;
+    font-weight: bold;
+    padding: 55px 0;
+    display: flex;
+    align-items: center;
+    font-size: 40px;
 }
