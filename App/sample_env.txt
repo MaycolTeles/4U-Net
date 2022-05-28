@@ -1,0 +1,9 @@
+USAGE:
+
+1º - Rename this file to ".env";
+2º - Replace the values that are within the "<>" below to your credentials.
+
+DB_HOST = <db_host>
+DB_NAME = <db_name>
+DB_USERNAME = <your_user>
+DB_PASSWORD = <your_password>
