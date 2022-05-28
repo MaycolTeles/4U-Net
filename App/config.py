@@ -12,6 +12,8 @@ JSON = Dict[str, Any]
 
 TEMPLATE_FOLDER_PATH = '../templates'
 
+STATIC_FOLDER_PATH = '../static'
+
 API_URL = 'https://app-challenge-api.herokuapp.com'
 
 

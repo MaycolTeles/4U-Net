@@ -1,12 +1,40 @@
 <!doctype html>
 <html>
+
   <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous"/>
     <title>4U-Net!</title>
+    <link rel="stylesheet" href="static/styles/style.css">
   </head>
+
   <body>
+<<<<<<< HEAD:App/templates/index.html
+
+    <div class="banner">
+      
+      <div class="navbar">
+        <img src="static/styles/assets/logo_azul.png" class="logo">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Login</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+
+      <div class="content">
+        <h1>FIND OUT</h1>
+        <p>the best internet provider for you</p>
+        <div>
+          <button type="button"><span></span><a href="{{ url_for('installers') }}">Instaladores</a></button>
+          <button type="button"><span></span><a href="{{ url_for('clients') }}">Planos</a></button>
+        </div>
+      </div>
+
+    </div>
+
+=======
     <p>Descrição da página.</p>
     <a href="{{ url_for('installers') }}" class='btn btn-primary'>Listar Instaladores</a>
     <a href="{{ url_for('plans') }}" class='btn btn-primary'>Listar Planos</a>
+>>>>>>> backend:App/templates/Common/index.html
   </body>
 </html>

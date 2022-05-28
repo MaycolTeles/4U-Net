@@ -1,17 +1,11 @@
 <!doctype html>
 <html>
-<head>
+  <head>
     <title>Planos</title>
-</head>
-<body>
-  
-    <ol>
-    <!-- For loop logic of jinja template -->
-    {%for i in range(0, len_plans)%}
-    
-        <li>{{ plans[i] }}</li>
-    {%endfor%}
-    </ol>
-  
-</body>
+    <link rel="stylesheet" href="../static/styles/style.css">
+  </head>
+  <body>
+    <p>PLANO: {{ plan_name }}.</p>
+    <a href="{{ url_for('index') }}" class='btn btn-primary'>Home</a>
+  </body>
 </html>
