@@ -21,7 +21,12 @@ class App:
         """
         Constructor to create a reference and initialize the app.
         """
-        self.__app = Flask(__name__, template_folder=TEMPLATE_FOLDER_PATH, static_folder=STATIC_FOLDER_PATH)
+        self.__app = Flask(
+            __name__,
+            template_folder=TEMPLATE_FOLDER_PATH,
+            static_folder=STATIC_FOLDER_PATH
+        )
+
         self.__routes = routes
 
         self.__create_routes()
