@@ -6,7 +6,8 @@ from flask import Flask
 
 from config import TEMPLATE_FOLDER_PATH
 from config import STATIC_FOLDER_PATH
-from src.MVC.View.routes import Routes
+
+from src.MVC.View.Routes.routes import Routes
 
 
 class App:
