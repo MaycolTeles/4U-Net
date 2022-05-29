@@ -1,10 +1,28 @@
 <!doctype html>
 <html>
+
   <head>
     <title>ERRO!</title>
+    <link rel="stylesheet" href="../static/styles/style.css">
   </head>
+
   <body>
-      <h1>Page Not Found</h1>
-      <p>O que você procura não está aqui.
-      <p><a href="{{ url_for('index') }}">Voltar ao início</a>
+
+    <div class="banner">
+      
+      <div class="navbar">
+        <img src="../static/styles/assets/logo_azul.png" class="logo">
+      </div>
+
+      <div class="content">
+        <h2>Page Not Found (404)</h2>
+        <p>O que você procura não está aqui.
+        <div>
+          <button type="button"><span></span><a href="{{ url_for('index') }}">Voltar ao início</a></button>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
 </html>

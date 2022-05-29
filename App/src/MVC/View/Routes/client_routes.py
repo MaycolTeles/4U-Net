@@ -4,7 +4,7 @@ Module containing the 'ClientRoutes' Class.
 
 from flask import Flask, render_template
 
-from src.Interfaces.MVC.View.route_interface import Route
+from App.src.Interfaces.MVC.View.route_interface import Route
 
 
 class ClientRoutes(Route):

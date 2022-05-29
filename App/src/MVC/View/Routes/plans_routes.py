@@ -2,13 +2,15 @@
 Module containing the 'PlansRoutes' Class.
 """
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 
-from config import JSON
+from App.config import JSON, HTTP_METHODS
 
-from src.Entities.API.ViasatAPI.plans_api import APIPlans
+from App.src.Entities.API.ViasatAPI.plans_api import APIPlans
 
-from src.Interfaces.MVC.View.route_interface import Route
+from App.src.Interfaces.MVC.View.route_interface import Route
+
+from App.src.Utils import utils
 
 
 class PlansRoutes(Route):
@@ -31,10 +33,10 @@ class PlansRoutes(Route):
         app : Flask
             A reference to the Flask app.
         """
-        app.add_url_rule('/escolher_estado/', methods=['GET', 'POST'], view_func=self.choose_state)
-        app.add_url_rule('/planos/', view_func=self.plans)
-        app.add_url_rule('/planos/<state>/', view_func=self.plans_from_state)
-        app.add_url_rule('/planos/<plan_id>/', view_func=self.plan)
+        app.add_url_rule('/planos/', view_func=self.all_plans)
+        app.add_url_rule('/planos/escolher_estado', view_func=self.choose_state)
+        app.add_url_rule('/planos/', methods=HTTP_METHODS, view_func=self.plans_from_state)
+        app.add_url_rule('/planos/<plan_id>', view_func=self.plan)
 
     # ROUTES:
     def choose_state(self) -> str:
@@ -46,13 +48,9 @@ class PlansRoutes(Route):
         str:
             The page to choose the state rendered in str format.
         """
-        if request.method == 'POST':
-            state = request.form.get('state')
-            return self.plans_from_state(state)
+        return render_template('Plans/choose_state.html')
 
-        return render_template('Plans/select_state.html')
-
-    def plans(self, plans: JSON={}) -> str:
+    def all_plans(self) -> str:
         """
         Method to render the page containing all plans.
 
@@ -61,16 +59,15 @@ class PlansRoutes(Route):
         str:
             The plans page rendered in str format.
         """
-        if not plans:
-            plans = self.api.get_plans()
+        plans = self.api.get_plans()
 
         return render_template(
-            'Plans/plans.html',
+            'Plans/all_plans.html',
             plans=plans,
             len_plans=len(plans)
         )
 
-    def plans_from_state(self, state: str) -> str:
+    def plans_from_state(self) -> str:
         """
         Method to render the page containing all plans from the chosen state.
 
@@ -78,13 +75,19 @@ class PlansRoutes(Route):
         --------
         str:
             The plans page containing all the plans
-            that are equal to the plan received as argument,
+            that their states are equal to the state received as argument,
             rendered in str format.
         """
+        state = request.form.get('state_select')
+
+        if state == 'Todos':
+            return self.all_plans()
+
         plans = self.api.get_plans_from_state(state)
 
         return render_template(
-            'Plans/plans.html',
+            'Plans/plans_from_state.html',
+            state=utils.convert_state_initials_to_full_name(state),
             plans=plans,
             len_plans=len(plans)
         )
