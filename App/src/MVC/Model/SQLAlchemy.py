@@ -4,6 +4,7 @@ Module containing the 'MySQL' Class.
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as SQLAlchemyClass
+from App.src.Entities.SQLAlchemy.user import User
 
 from App.src.Interfaces.MVC.Model.database_interface import Database
 
@@ -57,6 +58,32 @@ class SQLAlchemy(SQLAlchemyClass, Database):
             - False otherwise.
         """
         return True
+    
+    def add_user(self, user: User) -> bool:
+        """
+        Method to add a new user to the database.
 
+        Parameters
+        -----------
+        user : User
+            The user to be added to the database.
+
+        Returns
+        --------
+        bool
+            - True if user was successfully added;
+            - False otherwise.
+        """
+        try:
+            database.session.add(user)
+            database.session.commit()
+
+        except Exception as e:
+            print('ERROR!')
+            print(
+                'Error while trying to add a new user to the database.'
+                f'Error: {e}'
+            )
+        
 
 database = SQLAlchemy()
