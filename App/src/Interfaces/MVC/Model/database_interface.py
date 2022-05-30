@@ -2,7 +2,9 @@
 Module containing the 'Database' Interface.
 """
 
-from typing import Any, Protocol
+from flask import Flask
+
+from typing import Protocol
 
 
 class Database(Protocol):
@@ -17,12 +19,29 @@ class Database(Protocol):
     (Dependency Inversion Principle).
     """
 
-    def connect(self) -> bool:
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs) -> Protocol:
+        """
+        Possible changes to the value of the `__init__` argument do not affect
+        the returned instance.
+        """
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+    def connect(self, app: Flask) -> bool:
         """
         Method to connect to the database.
 
         This method must be implemented in all classes that
         implements this interface.
+
+        Parameters
+        -----------
+        app : Flask
+            The Flask application to initialize the DB.
 
         Returns
         --------
@@ -30,7 +49,6 @@ class Database(Protocol):
             - True if connection was successfully established;
             - False otherwise.
         """
-        ...
 
     def close(self) -> bool:
         """
@@ -45,73 +63,3 @@ class Database(Protocol):
             - True if connection was successfully closed;
             - False otherwise.
         """
-        ...
-
-    def insert_data(self, data: Any) -> bool:
-        """
-        Method to insert some data into the database.
-
-        This method must be implemented in all classes that
-        implements this interface
-
-        Returns
-        --------
-        bool
-            - True if data was successfully inserted into the database;
-            - False otherwise.
-        """
-        ...
-
-    def read_data(self) -> Any:
-        """
-        Method to read some data from the database.
-
-        This method must be implemented in all classes that
-        implements this interface
-
-        Returns
-        --------
-        Any
-            The data that was read.
-        """
-        ...
-
-    def update_data(self, data: Any) -> bool:
-        """
-        Method to update some data in the database.
-
-        This method must be implemented in all classes that
-        implements this interface.
-
-        Parameters
-        -----------
-        data : Any
-            The data to be updated in the database.
-
-        Returns
-        --------
-        bool
-            - True if data was successfully updated;
-            - False otherwise.
-        """
-        ...
-
-    def delete_data(self, data: Any) -> bool:
-        """
-        Method to delete some data from the database.
-
-        This method must be implemented in all classes that
-        implements this interface.
-
-        Parameters
-        -----------
-        data : Any
-            The data to be deleted in the database.
-
-        Returns
-        --------
-        bool
-            - True if data was successfully deleted;
-            - False otherwise.
-        """
-        ...

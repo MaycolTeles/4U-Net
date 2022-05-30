@@ -4,7 +4,7 @@ Module containing the 'TestController' Class.
 
 import unittest
 
-from src.MVC.Controller.controller import Controller
+from App.src.MVC.Controller.controller import Controller
 
 
 class TestController(unittest.TestCase):

@@ -5,9 +5,9 @@ Module containing the 'InstallerRoutes' Class.
 from flask import Flask, render_template
 
 
-from src.Entities.API.ViasatAPI.installers_api import APIInstallers
+from App.src.Entities.API.ViasatAPI.installers_api import APIInstallers
 
-from src.Interfaces.MVC.View.route_interface import Route
+from App.src.Interfaces.MVC.View.route_interface import Route
 
 
 class InstallerRoutes(Route):
@@ -30,7 +30,7 @@ class InstallerRoutes(Route):
         app : Flask
             A reference to the Flask app.
         """
-        app.add_url_rule('/instaladores/', view_func=self.installers)
+        app.add_url_rule('/instaladores', view_func=self.installers)
         app.add_url_rule('/instaladores/<installer_id>', view_func=self.installer)
 
     # ROUTES:

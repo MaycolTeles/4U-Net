@@ -10,15 +10,16 @@ from typing import Any, Dict
 
 JSON = Dict[str, Any]
 
+HTTP_METHODS = ['GET', 'POST']
+
 TEMPLATE_FOLDER_PATH = '../templates'
 
 API_URL = 'https://app-challenge-api.herokuapp.com'
 
 
-# DATABASE
+# ENV VARIABLES
 load_dotenv()
 
-DB_HOST = os.getenv('DB_HOST')
+FLASK_SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
+
 DB_NAME = os.getenv('DB_NAME')
-DB_USERNAME = os.getenv('DB_USERNAME')
-DB_PASSWORD = os.getenv('DB_PASSWORD')

@@ -5,10 +5,12 @@ Module containing the 'APIInstallers' Class.
 import requests
 
 
-from config import API_URL, JSON
+from App.config import API_URL, JSON
+
+from App.src.Interfaces.Entities.API.api import API
 
 
-class APIInstallers():
+class APIInstallers(API):
     """
     Class containing all the Installers API functionalities, like:
     
@@ -17,6 +19,22 @@ class APIInstallers():
     This Class implements an Interface to respect the DIP
     (Dependency Inversion Principle).
     """
+
+    # IMPLEMENTING THE INTERFACE's METHODS
+    def format_data(self, data: JSON) -> JSON:
+        """
+        Method to format the received data.
+
+        Parameters
+        ----------
+        data : JSON
+            The data to be formatted.
+
+        Returns
+        -------
+        JSON:
+            The formatted data.
+        """
 
     def get_installers(self) -> JSON:
         """
@@ -28,7 +46,8 @@ class APIInstallers():
             All the available installers.
         """
         res = requests.get(API_URL + '/installers')
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload
 
     def get_installers_from_installer_id(self, installer_id: str) -> JSON:
         """
@@ -46,7 +65,8 @@ class APIInstallers():
             if it exists.
         """
         res = requests.get(API_URL + '/installers/' + installer_id)
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload
 
     def get_installers_from_plan_id(self, plan_id: str) -> JSON:
         """
@@ -64,4 +84,5 @@ class APIInstallers():
             All the installers that matches the 'plan_id' if it exists.
         """
         res = requests.get(API_URL + '/installers?plan=' + plan_id)
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload

@@ -5,15 +5,15 @@ Module containing the "Routes" Class.
 from flask import Flask
 
 
-from src.Entities.API.ViasatAPI.plans_api import APIPlans
-from src.Entities.API.ViasatAPI.installers_api import APIInstallers
+from App.src.Entities.API.ViasatAPI.plans_api import APIPlans
+from App.src.Entities.API.ViasatAPI.installers_api import APIInstallers
 
-from src.Interfaces.MVC.View.route_interface import Route
+from App.src.Interfaces.MVC.View.route_interface import Route
 
-from src.MVC.View.Routes.common_routes import CommonRoutes
-from src.MVC.View.Routes.client_routes import ClientRoutes
-from src.MVC.View.Routes.installer_routes import InstallerRoutes
-from src.MVC.View.Routes.plans_routes import PlansRoutes
+from App.src.MVC.View.Routes.common_routes import CommonRoutes
+from App.src.MVC.View.Routes.client_routes import ClientRoutes
+from App.src.MVC.View.Routes.installer_routes import InstallerRoutes
+from App.src.MVC.View.Routes.plans_routes import PlansRoutes
 
 
 class Routes(Route):
@@ -39,3 +39,6 @@ class Routes(Route):
         """
         for entity in self.entities:
             entity.create_routes(app)
+
+
+routes = Routes()

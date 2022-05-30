@@ -4,9 +4,16 @@ Module containing the 'App' Class.
 
 from flask import Flask
 
-from config import TEMPLATE_FOLDER_PATH
-from config import STATIC_FOLDER_PATH
-from src.MVC.View.routes import Routes
+from os import path
+
+from flask_login import UserMixin
+
+from App.config import TEMPLATE_FOLDER_PATH, STATIC_FOLDER_PATH
+from App.config import DB_NAME
+from App.config import FLASK_SECRET_KEY
+
+from App.src.Interfaces.MVC.Model.database_interface import Database
+from App.src.Interfaces.MVC.View.route_interface import Route
 
 
 class App:
@@ -16,17 +23,54 @@ class App:
 
     app: Flask
 
-    def __init__(self, routes: Routes) -> None:
+    def __init__(
+        self,
+        database: Database,
+        login_manager: Database,
+        routes: Route,
+        ) -> Flask:
         """
-        Constructor to create a reference and initialize the app.
+        Constructor used to create a reference to:
+        * The Database;
+        * The Login Manager;
+        * The Routes;
+
+        Parameters
+        -----------
+        database : Database
+            A reference to the Database.
+
+        login_manager : LoginManager
+            A reference to the Login Manager.
+
+        routes : Route
+            A reference to all the app routes.
+
+        Returns
+        -----------
+        Flask:
+            A reference to the created Flask app.
         """
-        self.__app = Flask(
+        self.app = Flask(
             __name__,
             template_folder=TEMPLATE_FOLDER_PATH,
             static_folder=STATIC_FOLDER_PATH
         )
-
+        self.__db = database
+        self.__login_manager = login_manager
         self.__routes = routes
+
+        self.__config()
+
+    def __config(self) -> None:
+        """
+        Method to config the app.
+
+        Used to setup some configurations and variables.
+        """
+        self.app.config['SECRET_KEY'] = FLASK_SECRET_KEY
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+        self.__login_manager.login_view = 'src.MVC.View.Routes.common_routes'
 
         self.__create_routes()
 
@@ -34,11 +78,11 @@ class App:
         """
         Private method to create all the app routes.
         """
-        self.__routes.create_routes(self.__app)
+        self.__routes.create_routes(self.app)
 
     def run(self) -> None:
         """
         Method to run the app.
         """
         # TODO: REMOVE THE DEBUG WHEN FINISHED
-        self.__app.run(debug=True)
+        self.app.run(debug=True)

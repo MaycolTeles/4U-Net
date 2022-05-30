@@ -5,15 +5,62 @@ Module containing the 'APIPlans' Class.
 import requests
 
 
-from config import API_URL, JSON
+from App.config import API_URL, JSON
+
+from App.src.Interfaces.Entities.API.api import API
 
 
-class APIPlans():
+class APIPlans(API):
     """
     Class containing all the plans API functionalities, like:
     
     - Consulting available plans;
+
+    This Class implements an Interface to respect the DIP
+    (Dependency Inversion Principle).
     """
+
+    # IMPLEMENTING THE INTERFACE's METHODS
+    def format_data(self, data: JSON) -> JSON:
+        """
+        Method to format the received data.
+
+        Parameters
+        ----------
+        data : JSON
+            The data to be formatted.
+
+        Returns
+        -------
+        JSON:
+            The formatted data.
+        """
+        type_of_internet_replaces = {
+            'sat': 'Satélite',
+            'wire': 'Cabeada',
+            'cable': 'Cabeada',
+            'radio': 'Rádio'
+        }
+
+        try:
+            for item in data:
+
+                # REPLACING THE 'data_capacity' KEY (if needed)
+                if item['data_capacity'] is None:
+                    item['data_capacity'] = 'Não informado'
+
+                # REPLACING THE 'type_of_internet' KEY (if needed)
+                if item['type_of_internet'] in type_of_internet_replaces:
+                    item['type_of_internet'] = item['type_of_internet'].replace(
+                        item['type_of_internet'],
+                        type_of_internet_replaces[item['type_of_internet']]
+                    )
+        except Exception as e:
+            print('ERROR!')
+            print(f'Unable to retrieve data from the API. Error: {e}')
+            return {}
+
+        return data
 
     def get_plans(self) -> JSON:
         """
@@ -25,7 +72,8 @@ class APIPlans():
             All the available plans.
         """
         res = requests.get(API_URL + '/plans')
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload
 
     def get_plan_from_plan_id(self, plan_id: str) -> JSON:
         """
@@ -43,7 +91,8 @@ class APIPlans():
             The correspondent plan that matches the 'plan_id' if it exists.
         """
         res = requests.get(API_URL + '/plans/' + plan_id)
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload
 
     def get_plans_from_installer_id(self, installer_id: str) -> JSON:
         """
@@ -62,7 +111,8 @@ class APIPlans():
             if it exists.
         """
         res = requests.get(API_URL + '/plans?installer=' + installer_id)
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload
 
     def get_plans_from_state(self, state: str) -> JSON:
         """
@@ -81,4 +131,5 @@ class APIPlans():
             if it exists.
         """
         res = requests.get(API_URL + '/plans?state=' + state)
-        return res.json()
+        payload = self.format_data(res.json())
+        return payload

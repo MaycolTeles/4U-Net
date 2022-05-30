@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+    <head>
+        <title>Planos</title>
+        <link rel="stylesheet" href="../static/styles/style.css">
+    </head>
+
+    <body>
+        <div class="banner">
+            <div class="navbar">
+                <a href="{{ url_for('index') }}"><img src="../static/styles/assets/logo_azul.png" class="logo"></a>
+                <ul>
+                    <li><a href="#">Agenda</a></li>
+                    <li><a href="#">Idioma</a></li>
+                    <li><a href="#">Ajuda</a></li>
+                </ul>
+            </div>
+        
+            <div class="content">
+                <p>Planos {{ state }}:</p>
+                <br><br><br>
+
+                <div id="table-wrapper">
+                    <div id="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Número do Plano</th>
+                                    <th>Provedor</th>
+                                    <th>Franquia de dados [GB]</th>
+                                    <th>Velocidade de download [Mbps]</th>
+                                    <th>Descrição</th>
+                                    <th>Preço mensal</th>
+                                    <th>Tipo de internet</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <!-- For loop logic of jinja template -->
+                                {%for i in range(0, len_plans)%}
+                                    <tr>
+                                        <td>{{ plans[i]['id'] }}</td>
+                                        <td>{{ plans[i]['isp'] }}</td>
+                                        <td>{{ plans[i]['data_capacity'] }}</td>
+                                        <td>{{ plans[i]['download_speed'] }}</td>
+                                        <td>{{ plans[i]['description'] }}</td>
+                                        <td>{{ "R$%.2f"|format(plans[i]['price_per_month']) }}</td>
+                                        <td>{{ plans[i]['type_of_internet'] }}</td>
+                                    </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
