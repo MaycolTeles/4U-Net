@@ -1,5 +1,5 @@
 """
-Module containing the 'MyDatabase' Class.
+Module containing the 'MySQL' Class.
 """
 
 from typing import Any
@@ -7,7 +7,7 @@ from typing import Any
 from App.src.Interfaces.MVC.Model.database_interface import Database
 
 
-class MyDatabase(Database):
+class MySQL(Database):
     """
     Class to represent a generic Database.
 
@@ -30,7 +30,12 @@ class MyDatabase(Database):
             - True if connection was successfully established;
             - False otherwise.
         """
-        ...
+        conn = mysql.connect(
+            host='localhost',
+            database='Electronics',
+            user='pynative',
+            password='pynative@#29'
+        )
 
     def close(self) -> bool:
         """
