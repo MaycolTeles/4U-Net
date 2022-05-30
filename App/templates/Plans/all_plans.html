@@ -3,13 +3,13 @@
 
     <head>
         <title>Planos</title>
-        <link rel="stylesheet" href="../static/styles/style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
     </head>
 
     <body>
         <div class="banner">
             <div class="navbar">
-                <a href="{{ url_for('index') }}"><img src="../static/styles/assets/logo_azul.png" class="logo"></a>
+                <a href="{{ url_for('common_routes.index') }}"><img src="{{ url_for('static', filename='styles/assets/logo_azul.png') }}" class="logo"></a>
                 <ul>
                     <li><a href="#">Agenda</a></li>
                     <li><a href="#">Idioma</a></li>

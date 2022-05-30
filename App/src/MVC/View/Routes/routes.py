@@ -4,31 +4,27 @@ Module containing the "Routes" Class.
 
 from flask import Flask
 
-
-from App.src.Entities.API.ViasatAPI.plans_api import APIPlans
-from App.src.Entities.API.ViasatAPI.installers_api import APIInstallers
-
-from App.src.Interfaces.MVC.View.route_interface import Route
-
-from App.src.MVC.View.Routes.common_routes import CommonRoutes
-from App.src.MVC.View.Routes.client_routes import ClientRoutes
-from App.src.MVC.View.Routes.installer_routes import InstallerRoutes
-from App.src.MVC.View.Routes.plans_routes import PlansRoutes
+from App.src.MVC.View.Routes.error_routes import error_routes
+from App.src.MVC.View.Routes.common_routes import common_routes
+from App.src.MVC.View.Routes.client_routes import client_routes
+from App.src.MVC.View.Routes.installer_routes import installers_routes
+from App.src.MVC.View.Routes.plans_routes import plans_routes
 
 
-class Routes(Route):
+class Routes():
     """
-    Class containing all the routes
+    Class to register all the blueprints routes.
     """
 
-    entities = [
-        CommonRoutes(),
-        ClientRoutes(),
-        InstallerRoutes(APIInstallers()),
-        PlansRoutes(APIPlans())
-    ]
+    blueprints = {
+        error_routes: '',
+        common_routes: '/',
+        client_routes: '/clientes',
+        installers_routes: '/instaladores',
+        plans_routes: '/planos'
+    }
 
-    def create_routes(self, app: Flask):
+    def register_blueprints(self, app: Flask):
         """
         Method to create all the routes.
 
@@ -37,8 +33,9 @@ class Routes(Route):
         app : Flask
             A reference to the Flask app.
         """
-        for entity in self.entities:
-            entity.create_routes(app)
+
+        for blueprint, url in self.blueprints.items():
+            app.register_blueprint(blueprint, url_prefix=url)
 
 
 routes = Routes()

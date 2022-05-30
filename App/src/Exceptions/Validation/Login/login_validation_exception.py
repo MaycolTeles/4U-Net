@@ -2,7 +2,7 @@
 Module containing all the exceptions related to the login validations.
 """
 
-from src.Exceptions.validation_exceptions import ValidationException
+from App.src.Exceptions.Validation.validation_exceptions import ValidationException
 
 
 class LoginValidationException(ValidationException):

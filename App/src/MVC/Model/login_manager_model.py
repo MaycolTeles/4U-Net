@@ -3,16 +3,16 @@ Module containing the 'LoginManager' Class.
 """
 
 from flask import Flask, flash
-from flask_login import LoginManager as LoginManagerClass, UserMixin
+from flask_login import LoginManager, login_user
+from werkzeug.security import check_password_hash
+
+from App.src.Exceptions.Validation.Login.login_validation_exception import *
+from App.src.Exceptions.Validation.Register.register_validation_exceptions import *
 
 from App.src.Entities.SQLAlchemy.user import User
-from App.src.Interfaces.MVC.Model.database_interface import Database
-
-from App.src.Exceptions.Login.login_validation_exception import *
-from App.src.Exceptions.Register.register_validation_exceptions import *
 
 
-class LoginManager(LoginManagerClass, Database):
+class LoginManagerModel(LoginManager):
     """
     Class to represent the LoginManager.
 
@@ -50,16 +50,41 @@ class LoginManager(LoginManagerClass, Database):
 
         return True
 
-    def close(self) -> bool:
+    def register(
+        self,
+        email: str,
+        username: str,
+        password: str,
+        password_confirmation: str
+    ) -> bool:
         """
-        Method to close the LOginManager connection.
+        ...
+        """
+        # CHECKING IF THE PROVIDED CREDENTIALS ARE VALID
+        validated = self.validate_register(
+            username,
+            email,
+            password,
+            password_confirmation
+        )
 
-        Returns
-        --------
-        bool
-            - True if connection was successfully closed;
-            - False otherwise.
+        if not validated:
+            return False
+
+    def login(self, email: str, password: str) -> bool:
         """
+        ...
+        """
+        # CHECKING IF USER WAS ABLE TO BE VALIDATED
+        validated = self.validate_login(email, password)
+
+        if not validated:
+            return False
+
+        user = User.query.filter_by(email=email).first()
+        login_user(user, remember=True)
+
+        return True
 
     def validate_register(
         self,
@@ -94,7 +119,7 @@ class LoginManager(LoginManagerClass, Database):
         Raises
         --------
         ValidationException:
-            If the .
+            If any field was not valid.
         """
 
         validations = [
@@ -235,12 +260,120 @@ class LoginManager(LoginManagerClass, Database):
 
         return True
 
+    def validate_login(self, email: str, password: str) -> bool:
+        """
+        Method to validade the fields needed to login the user.
 
-login_manager = LoginManager()
+        Parameters
+        -----------
+        email : str
+            The user email.
+
+        password : str
+            The user password.
+
+        Returns
+        --------
+        bool:
+            - True if the user can login.
+            - Raises an exception otherwise.
+
+        Raises
+        --------
+        ValidationException:
+            If any field was not valid.
+        """
+
+        validations = [
+            self.validate_login_email,
+            self.validate_login_password
+        ]
+
+        validations_params = [
+            email,
+            password
+        ]
+
+        # EXECUTING ALL VALIDATIONS
+        for validation, params in zip(validations, validations_params):
+
+            try:
+                res = validation(params)
+            
+            except LoginValidationException as e:
+                flash(e, category='error')
+                return False
+
+        return res
+
+    def validate_login_email(self, email: str) -> bool:
+        """
+        Method to validade the user email.
+
+        Parameters
+        -----------
+        email : str
+            The user email.
+
+        Returns
+        --------
+        bool
+            - True if the user email is in the database;
+            - Raises an exception otherwise.
+
+        Raises
+        -------
+        UserNotFoundException
+            If the provided email was not found in the database.
+        """
+        user = User.query.filter_by(email=email).first()
+
+        # IF USER NOT IN DATABASE
+        if not user:
+            raise UserNotFoundException(
+                'User not found in database. May the e-mail be incorrect?'
+            )
+
+        return True
+        
+    def validate_login_password(self, email: str, password: str) -> bool:
+        """
+        Method to validade the user password.
+
+        Parameters
+        -----------
+        email : str
+            The user email.
+
+        password : str
+            The user password.
+
+        Returns
+        --------
+        bool
+            - True if the password is correct;
+            - Raises an exception otherwise.
+
+        Raises
+        -------
+        PasswordIncorrectException
+            If the provided password is incorrect.
+        """
+        user = User.query.filter_by(email=email).first()
+
+        if not check_password_hash(user.password, password):
+            raise PasswordIncorrectException(
+                'Password is incorrect. Please, try again.'
+            )
+
+        return True
+
+
+login_manager = LoginManagerModel()
 
 
 @login_manager.user_loader
-def load_user() -> UserMixin:
+def load_user():
     """
     Method to load the user
 

@@ -1,53 +1,42 @@
 """
-Module containing the 'ClientRoutes' Class.
+Module containing all routes related to the clients.
 """
 
-from flask import Flask, render_template
-
-from App.src.Interfaces.MVC.View.route_interface import Route
+from flask import Blueprint, render_template
 
 
-class ClientRoutes(Route):
+client_routes = Blueprint('client_routes', __name__)
+
+
+# ROUTES:
+@client_routes.route('/clientes')
+def clients() -> str:
     """
-    Class containing all the Client Routes.
+    Function to create the '/clientes' route and
+    render the clients page.
+
+    Returns
+    --------
+    str:
+        The clients page rendered in str format.
     """
+    return render_template('Clients/clients.html')
 
-    def create_routes(self, app: Flask) -> None:
-        """
-        Method to create all the client routes.
 
-        Parameters
-        -----------
-        app : Flask
-            A reference to the Flask app.
-        """
-        app.add_url_rule('/clientes', view_func=self.clients)
-        app.add_url_rule('/clientes/<client_name>', view_func=self.client)
+@client_routes.route('/cliente')
+def client(client_name: str) -> str:
+    """
+    Function to create the '/cliente' rounte and
+    render the client page, based on a single client.
 
-    # ROUTES:
-    def clients(self) -> str:
-        """
-        Method to render the clients page.
+    Parameters
+    ----------
+    client_name : str
+        The client name
 
-        Returns
-        --------
-        str:
-            The clients page rendered in str format.
-        """
-        return render_template('Clients/clients.html')
-
-    def client(self, client_name: str) -> str:
-        """
-        Method to render the client page, based on a single client.
-
-        Parameters
-        ----------
-        client_name : str
-            The client name
-
-        Returns
-        --------
-        str:
-            The clients page rendered in str format.
-        """
-        return render_template('Clients/clients.html', client_name=client_name)
+    Returns
+    --------
+    str:
+        The clients page rendered in str format.
+    """
+    return render_template('Clients/clients.html', client_name=client_name)

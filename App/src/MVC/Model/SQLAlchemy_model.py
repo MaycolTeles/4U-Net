@@ -3,13 +3,16 @@ Module containing the 'MySQL' Class.
 """
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy as SQLAlchemyClass
-from App.src.Entities.SQLAlchemy.user import User
+from flask_login import login_user
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash
 
-from App.src.Interfaces.MVC.Model.database_interface import Database
+from os import path
+
+from App.config import DB_NAME
 
 
-class SQLAlchemy(SQLAlchemyClass, Database):
+class SQLAlchemyModel(SQLAlchemy):
     """
     Class to represent the SQLAlchemy Database.
 
@@ -39,6 +42,8 @@ class SQLAlchemy(SQLAlchemyClass, Database):
         """
         try:
             self.init_app(app)
+            # TODO: CHECK IF THIS WORKS
+            # self.create_database(app)
 
         except Exception as e:
             print('ERROR!')
@@ -47,26 +52,26 @@ class SQLAlchemy(SQLAlchemyClass, Database):
 
         return True
 
-    def close(self) -> bool:
+    def create_database(self, app: Flask):
         """
-        Method to close the database connection.
+        Method to create the database if it doesn't exists yet.
 
-        Returns
-        --------
-        bool
-            - True if connection was successfully closed;
-            - False otherwise.
+        Parameters
+        -----------
+        app : Flask
+            The Flask app.
         """
-        return True
+        if not path.exists('App/src/' + DB_NAME):
+            database.create_all(app=app)
+            print("Database created!")
     
-    def add_user(self, user: User) -> bool:
+    def add_user(self, username: str, email: str, password: str) -> bool:
         """
         Method to add a new user to the database.
 
         Parameters
         -----------
-        user : User
-            The user to be added to the database.
+        ...
 
         Returns
         --------
@@ -75,8 +80,15 @@ class SQLAlchemy(SQLAlchemyClass, Database):
             - False otherwise.
         """
         try:
-            database.session.add(user)
-            database.session.commit()
+            from App.src.Entities.SQLAlchemy.user import User
+            new_user = User(
+                username=username,
+                email=email,
+                password=generate_password_hash(password, method='sha256')
+            )
+
+            self.session.add(new_user)
+            self.session.commit()
 
         except Exception as e:
             print('ERROR!')
@@ -84,6 +96,12 @@ class SQLAlchemy(SQLAlchemyClass, Database):
                 'Error while trying to add a new user to the database.'
                 f'Error: {e}'
             )
-        
+            return False
 
-database = SQLAlchemy()
+        else:
+            login_user(new_user, remember=True)
+
+        return True
+
+
+database = SQLAlchemyModel()
