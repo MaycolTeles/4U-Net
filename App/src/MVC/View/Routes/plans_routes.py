@@ -2,8 +2,9 @@
 Module containing the 'PlansRoutes' Class.
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 
+from config import JSON
 
 from src.Entities.API.ViasatAPI.plans_api import APIPlans
 
@@ -30,11 +31,28 @@ class PlansRoutes(Route):
         app : Flask
             A reference to the Flask app.
         """
+        app.add_url_rule('/escolher_estado/', methods=['GET', 'POST'], view_func=self.choose_state)
         app.add_url_rule('/planos/', view_func=self.plans)
-        app.add_url_rule('/planos/<plan_id>', view_func=self.plan)
+        app.add_url_rule('/planos/<state>/', view_func=self.plans_from_state)
+        app.add_url_rule('/planos/<plan_id>/', view_func=self.plan)
 
     # ROUTES:
-    def plans(self) -> str:
+    def choose_state(self) -> str:
+        """
+        Method to render the page to choose a state.
+
+        Returns
+        --------
+        str:
+            The page to choose the state rendered in str format.
+        """
+        if request.method == 'POST':
+            state = request.form.get('state')
+            return self.plans_from_state(state)
+
+        return render_template('Plans/select_state.html')
+
+    def plans(self, plans: JSON={}) -> str:
         """
         Method to render the page containing all plans.
 
@@ -43,7 +61,27 @@ class PlansRoutes(Route):
         str:
             The plans page rendered in str format.
         """
-        plans = self.api.get_plans()
+        if not plans:
+            plans = self.api.get_plans()
+
+        return render_template(
+            'Plans/plans.html',
+            plans=plans,
+            len_plans=len(plans)
+        )
+
+    def plans_from_state(self, state: str) -> str:
+        """
+        Method to render the page containing all plans from the chosen state.
+
+        Returns
+        --------
+        str:
+            The plans page containing all the plans
+            that are equal to the plan received as argument,
+            rendered in str format.
+        """
+        plans = self.api.get_plans_from_state(state)
 
         return render_template(
             'Plans/plans.html',
