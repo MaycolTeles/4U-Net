@@ -6,6 +6,8 @@ from flask import Flask, flash
 from flask_login import LoginManager, login_user
 from werkzeug.security import check_password_hash
 
+from typing import Tuple
+
 from App.src.Exceptions.Validation.Login.login_validation_exception import *
 from App.src.Exceptions.Validation.Register.register_validation_exceptions import *
 
@@ -215,21 +217,14 @@ class LoginManagerModel(LoginManager):
         
         return True
 
-    def validate_register_password(
-        self,
-        password: str,
-        password_confirmation: str
-    ) -> bool:
+    def validate_register_password(self, passwords: Tuple[str, str]) -> bool:
         """
         Method to validade the user password.
 
         Parameters
         -----------
-        password : str
-            The user password.
-
-        password_confirmation : str
-            The user password confirmation.
+        passwords : Tuple[str, str]
+            A Tuple containing the user password and the password_confirmation.
 
         Returns
         --------
@@ -246,9 +241,12 @@ class LoginManagerModel(LoginManager):
         PasswordNotStrongException
             If the provided password is invalid (too short/weak).
         """
+        password = passwords[0]
+        password_confirmation = passwords[1]
+
         if password != password_confirmation:
             raise PasswordsDoesntMatchException(
-                'The passwords doesn\t match.'
+                'The passwords doesn\'t match. '
                 'Please, try again.'
             )
 
