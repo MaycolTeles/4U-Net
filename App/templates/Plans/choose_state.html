@@ -3,22 +3,22 @@
 
   <head>
     <title>Planos</title>
-    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
   </head>
 
   <body>
     <div class="banner">
       <div class="navbar">
-        <a href="{{ url_for('index') }}"><img src="../static/styles/assets/logo_azul.png" class="logo"></a>
+        <a href="{{ url_for('common_routes.index') }}"><img src="{{ url_for('static', filename='styles/assets/logo_azul.png') }}" class="logo"></a>
         <ul>
           <li><a href="#">Agenda</a></li>
           <li><a href="#">Idioma</a></li>
           <li><a href="#">Ajuda</a></li>
         </ul>
       </div>
-      <form action="{{ url_for('plans_from_state') }}" method="POST">
+      <form action="{{ url_for('plans_routes.plans_from_state') }}" method="POST">
         <label for="estado">Escolha um estado:</label>
-        <select id="state" name="state_select">
+        <select id="state" name="state">
           <option value="Todos" selected>Todos</option>
           <option value="AC">Acre</option>
           <option value="AL">Alagoas</option>

@@ -3,7 +3,7 @@
 
   <head>
     <title>4U-Net!</title>
-    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
   </head>
 
   <body>
@@ -11,9 +11,9 @@
     <div class="banner">
       
       <div class="navbar">
-        <img src="../static/styles/assets/logo_azul.png" class="logo">
+        <img src="{{ url_for('static', filename='styles/assets/logo_azul.png') }}" class="logo">
         <ul>
-          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('common_routes.login') }}">Login</a></li>
           <li><a href="#">Idioma</a></li>
           <li><a href="#">Ajuda</a></li>
         </ul>
@@ -23,8 +23,8 @@
         <h1>DESCUBRA</h1>
         <p>Os melhores planos e instaladores para você!</p>
         <div>
-          <button type="button"><span></span><a href="{{ url_for('installers') }}">Instaladores</a></button>
-          <button type="button"><span></span><a href="{{ url_for('plans') }}">Planos</a></button>
+          <button type="button"><span></span><a href="{{ url_for('installers_routes.installers') }}">Instaladores</a></button>
+          <button type="button"><span></span><a href="{{ url_for('plans_routes.choose_state') }}">Planos</a></button>
         </div>
       </div>
 

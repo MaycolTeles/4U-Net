@@ -7,7 +7,7 @@ from sqlalchemy.sql import func
 
 from dataclasses import dataclass
 
-from App import database as db
+from App.src.MVC.Model.SQLAlchemy_model import database as db
 
 
 @dataclass

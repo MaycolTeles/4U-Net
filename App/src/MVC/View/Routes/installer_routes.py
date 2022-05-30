@@ -1,71 +1,55 @@
 """
-Module containing the 'InstallerRoutes' Class.
+Module containing all routes related to the installers.
 """
 
-from flask import Flask, render_template
+from flask import Blueprint, render_template
+
+from App.src.Entities.API.ViasatAPI.api_installers import APIInstallers
+from App.src.MVC.Controller.controller_api import ControllerAPI
 
 
-from App.src.Entities.API.ViasatAPI.installers_api import APIInstallers
+installers_routes = Blueprint('installers_routes', __name__)
+controller_api = ControllerAPI(APIInstallers())
 
-from App.src.Interfaces.MVC.View.route_interface import Route
 
-
-class InstallerRoutes(Route):
+# ROUTES:
+@installers_routes.route('/')
+def installers() -> str:
     """
-    Class containing all the Installer Routes.
+    Function to create the '/' route and
+    render the page containing all installers.
+
+    Returns
+    --------
+    str:
+        The installers page rendered in str format.
     """
+    installers = controller_api.get_all_data()
 
-    def __init__(self, api: APIInstallers) -> None:
-        """
-        Constructor the create a reference to the Plans API.
-        """
-        self.api = api
+    return render_template(
+        'Installers/installers.html',
+        installers=installers,
+        len_installers=len(installers)
+    )
 
-    def create_routes(self, app: Flask) -> None:
-        """
-        Method to create all the installer routes.
 
-        Parameters
-        -----------
-        app : Flask
-            A reference to the Flask app.
-        """
-        app.add_url_rule('/instaladores', view_func=self.installers)
-        app.add_url_rule('/instaladores/<installer_id>', view_func=self.installer)
+@installers_routes.route('/<installer_id>')
+def installer(installer_id: str) -> str:
+    """
+    Function to create the '/<installer_id>' route
+    and render the page containing a single installer,
+    which the id was received as argument.
 
-    # ROUTES:
-    def installers(self) -> str:
-        """
-        Method to render the page containing all installers.
+    Parameters
+    ----------
+    installer_id : str
+        The installer id
 
-        Returns
-        --------
-        str:
-            The installers page rendered in str format.
-        """
-        installers = self.api.get_installers()
+    Returns
+    --------
+    str:
+        The installers page rendered in str format.
+    """
+    installer = controller_api.get_data_from_params(('installer_id', installer_id))
 
-        return render_template(
-            'Installers/installers.html',
-            installers=installers,
-            len_installers=len(installers)
-        )
-
-    def installer(self, installer_id: str) -> str:
-        """
-        Method to render the page containing a single installer,
-        which the id was received as argument.
-
-        Parameters
-        ----------
-        installer_id : str
-            The installer id
-
-        Returns
-        --------
-        str:
-            The installers page rendered in str format.
-        """
-        installer = self.api.get_installers_from_installer_id(installer_id)
-
-        return render_template('Installers/installer.html', installer=installer)
+    return render_template('Installers/installer.html', installer=installer)
